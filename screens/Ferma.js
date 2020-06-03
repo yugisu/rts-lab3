@@ -1,6 +1,6 @@
 import React, { useState, Fragment } from "react";
 
-import { View, Text, Button } from "react-native";
+import { View, Text, Button, Alert } from "react-native";
 
 import { Card, Subheader } from "react-native-material-ui";
 import { TextField } from "react-native-material-textfield";
@@ -8,6 +8,8 @@ import { TextField } from "react-native-material-textfield";
 import { styles } from "../styles";
 
 const calcFactorization = (n, amount) => {
+  const timeStart = performance.now();
+
   const s = Math.ceil(Math.sqrt(n));
 
   if (s * s == n) {
@@ -20,6 +22,15 @@ const calcFactorization = (n, amount) => {
   let gotResult = false;
 
   while (!gotResult) {
+    if ((performance.now() - timeStart) > 1000) {
+      Alert.alert(
+        "Calculation error",
+        "Factorization is beeing calculated more than 1 second. That's an error!"
+      );
+
+      return [0, 0, 0, 0, true];
+    }
+
     x += k;
     l = x * x - n;
     k++;
